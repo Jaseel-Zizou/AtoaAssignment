@@ -30,15 +30,17 @@
 9. sudo usermod -a -G docker ec2-user
 10. reconnect
 11. docker build -t jaseel:1 .
-
-12. Open port 3000 in security group inbound rule.
+12. docker tag jaseel:1 jaseelkkk/jaseel:1
+13. docker login
+14. docker push jaseelkkk/jaseel:1
+15. Open port 3000 in security group inbound rule.
 
 //Run using Docker compose
 
-13. sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-14. sudo chmod +x /usr/local/bin/docker-compose
-15. docker-compose config
-16. vim docker-compose.yml
+16. sudo curl -L "https://github.com/docker/compose/releases/download/1.24.1/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+17. sudo chmod +x /usr/local/bin/docker-compose
+18. docker-compose config
+19. vim docker-compose.yml
 
 version: "3"
 
@@ -50,42 +52,44 @@ services:
        ports:
        - "3000:3000"
 
-17. docker-compose up -d
-18. curl localhost:3000
+20. docker-compose up -d
+21. curl localhost:3000
 
 Hello World!
 
-19. kubectl create deployment express_app_sample --image=jaseel:1 --replicas=1 --dry-run=client -o yaml > deploy.yaml
+//Run this on GKE
+
+22. kubectl create deployment expressapp --image=jaseelkkk/jaseel:1 --replicas=1 --dry-run=client -o yaml > deploy.yaml
 
 apiVersion: apps/v1
 kind: Deployment
 metadata:
   creationTimestamp: null
   labels:
-    app: express_app_sample
-  name: express_app_sample
+    app: expressapp
+  name: expressapp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: express_app_sample
+      app: expressapp
   strategy: {}
   template:
     metadata:
       creationTimestamp: null
       labels:
-        app: express_app_sample
+        app: expressapp
     spec:
       containers:
-      - image: jaseel:1
+      - image: jaseelkkk/jaseel:1
         name: jaseel
         resources: {}
 status: {}
 
 
-20. kubectl apply -f deploy.yaml
+23. kubectl apply -f deploy.yaml
 
-21. kubectl autoscale deployment  expressapp    --cpu-percent=50 --min=1 --max=10 --dry-run=client -o yaml > autoscaling.yaml
+24. kubectl autoscale deployment  expressapp    --cpu-percent=50 --min=1 --max=10 --dry-run=client -o yaml > autoscaling.yaml
 
   apiVersion: autoscaling/v1
   kind: HorizontalPodAutoscaler
@@ -104,4 +108,4 @@ status: {}
     currentReplicas: 0
     desiredReplicas: 0
 
-22. kubectl apply -f autoscaling.yaml    
+25. kubectl apply -f autoscaling.yaml    
