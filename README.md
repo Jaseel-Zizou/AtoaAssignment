@@ -6,7 +6,7 @@ git clone https://github.com/ATOAPaymentsLimited/SampleExpressApp
 
 2. Dockerise the project create a docker file and docker-compose
 
-Find the Dockerfile in the repo
+Find the Dockerfile in the repo,
 Find the docker-compose.yaml  in the repo
 
 
